@@ -29,10 +29,21 @@ def getSecond(input):
     stringTwo = list[1]
     return stringTwo
 
+def getSecondMut(input):
+    list = input.split(" ")
+    stringOne = list[0]
+    stringTwo = list[1]
+    if stringTwo in input:
+        return stringTwo
+    else:
+        return "CRITICAL ERROR PLEASE RETRY"
+
 #SECOND REQUIREMENT
 
 #THIS FINDS THE SECURITY DIGITS
 def getDigits(input):
+    #print(input)
+    #print([input[9], input[19], input[27],input[37]])
     return [input[9], input[19], input[27],input[37]]
 
 
@@ -46,13 +57,13 @@ def getDigits(input):
 #THIS IS A MOCK FOR THE DATABASE. RIGHT NOW, IT ONLY CHECKS IF ABRAHAM LINCOLN IS TRYING TO GET PAST SECURITY.
 def databaseRequest(input, DEBUGGING_MODE):
     if(DEBUGGING_MODE):
-        return "None"
+        return "Good, Return Original"
     else:
-        print(input[4:22])
+
         if(input[4:22] == "LINCOLNABRAHAM"):
             return "THIS IS A FAKE ID, REPORT IT IMMEDIATELY"
         else:
-            return "None"
+            return "Good, Return Original"
 
 #THIS GETS THE INFORMATION READY FOR THE DATABASE
 def getDatabase(input, SERVERCONNECTION):
@@ -60,20 +71,30 @@ def getDatabase(input, SERVERCONNECTION):
     stringOne = list[0]
     stringTwo = list[1]
     dataFound = databaseRequest(stringOne, SERVERCONNECTION)
-    if(dataFound == "None"):
+    if(dataFound == "Good, Return Original"):
         return stringTwo
     else:
         return dataFound
     return input
 
-
+#Before
 #THIS GETS THE MOD VALUE
 def getMod(input):
     return input % 10
 
+#THIS GETS THE MOD VALUE
+#After
+def getModMut(input):
+    modONE = input % 10
+    modTWO = input % 10
+
+    if (modONE == modTWO):
+        return modONE
+    else:
+        return "SERIOUS ERROR TRY AGAIN"
+
 #THIS IS THE FLETCHER16 CODE
 def fletcher16(data):
-
     #code inspired by https://ozeki.hu/p_1613-fletcher-16-checksum-generator.html
     sum1 = 0xff
     sum2 = 0xff
@@ -98,8 +119,7 @@ def fletcher16(data):
 
 #THIS SPLITS THE STRING INTO IT'S NON SECURITY NUMBER PARTS
 def splitTheString(input):
-
-    return [input[0:9], input[13:19], input[20:27], input[28:len(input) - 1]]
+    return [input[0:9], input[13:19], input[21:27], input[28:len(input) - 1]]
 
 
 
@@ -137,14 +157,14 @@ def securityCheck(codeGiven, codeGenerated, listGiven, listGenerated):
     return messageToReturn
 
 
-
+#THIS PUTS IT ALL TOGETHER
 def FULLSYSTEM(input, SERVERCONNECTION):
     lenCheck = checkInput(input)
     if(lenCheck != "Good"):
         return lenCheck
 
     scanned = scanMRZ(input)
-    print(scanned)
+    #print(scanned)
     validCharCheck = checkValues(scanned)
     if(validCharCheck ==  "INVALID SCAN: INVALID CHARACTERS"):
         return "INVALID SCAN: INVALID CHARACTERS"
