@@ -1,11 +1,27 @@
 
 
-
+#BEFORE
 #FIRST REQUIREMENT
 def scanMRZ(input):
     #THIS DOES STUFF WITH HARDWARE, FOR NOW IGNORE
-    input = input.replace("<","")
-    return input
+    inputRETURN = input.replace("<","")
+    return inputRETURN
+
+
+#AFTER
+def scanMRZMUT(input):
+    #THIS DOES STUFF WITH HARDWARE, FOR NOW IGNORE
+    inputRETURN = input.replace("<",",")
+    final = ""
+    for a in input:
+        if (a.isdigit()) or  a != " " or (a.isalpha()):
+            final += a
+    if(final == inputRETURN):
+        return final
+    elif(final == input.replace("<",",")):
+        return final
+    elif((inputRETURN == input.replace("<",","))):
+        return
 
 def checkInput(input):
     if(len(input) == len("P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<< L898902C36UT07408122F1204159ZE184226B<<<<<<1")):
@@ -21,7 +37,7 @@ def checkValues(input):
             return "INVALID SCAN: INVALID CHARACTERS"
     return "Works Out"
 
-
+#Before
 #THIS GETS THE SECOND LINE
 def getSecond(input):
     list = input.split(" ")
@@ -29,14 +45,16 @@ def getSecond(input):
     stringTwo = list[1]
     return stringTwo
 
+#After
 def getSecondMut(input):
     list = input.split(" ")
-    stringOne = list[0]
+    stringOne = 0
     stringTwo = list[1]
     if stringTwo in input:
+
         return stringTwo
     else:
-        return "CRITICAL ERROR PLEASE RETRY"
+        return input.split(" ")[0]
 
 #SECOND REQUIREMENT
 
@@ -87,11 +105,13 @@ def getMod(input):
 def getModMut(input):
     modONE = input % 10
     modTWO = input % 10
-
+    modTHREE = input % 10
     if (modONE == modTWO):
         return modONE
-    else:
-        return "SERIOUS ERROR TRY AGAIN"
+    elif(modONE == modTHREE):
+        return modONE
+    elif(modTWO == modTHREE):
+        return modTWO
 
 #THIS IS THE FLETCHER16 CODE
 def fletcher16(data):
